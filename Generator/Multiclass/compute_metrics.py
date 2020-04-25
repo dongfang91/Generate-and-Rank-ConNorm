@@ -83,7 +83,7 @@ if _has_sklearn:
             return {"acc": simple_accuracy(preds, labels)}
         elif task_name == "twa":
             return {"acc": simple_accuracy(preds, labels)}
-        elif task_name == "smm4h":
+        elif task_name == "n2c2":
             return {"acc": simple_accuracy(preds, labels)}
         else:
-            raise KeyError(task_name)
+            raise  {"acc": simple_accuracy(preds, labels)}

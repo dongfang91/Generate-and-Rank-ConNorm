@@ -292,7 +292,7 @@ def load_and_cache_examples(args, task, tokenizer, evaluate=False,test=False):
         features = torch.load(cached_features_file)
     else:
         logger.info("Creating features from dataset file at %s", args.data_dir)
-        if task in ['ask','twa',"smm4h"]:
+        if task in ['ask','twa',"smm4h","n2c2"]:
             label_list = processor.get_labels(args.label_dir)
         else:
             label_list = processor.get_labels()
@@ -590,10 +590,10 @@ def main():
             output_dir = args.output_dir
         checkpoints = [args.model_name_or_path]
 
-        if args.eval_all_checkpoints:
-            checkpoints = list(os.path.dirname(c) for c in sorted(glob.glob(output_dir + '/**/' + WEIGHTS_NAME, recursive=True)))
-            checkpoints = checkpoints[:-1]
-            logging.getLogger("transformers.modeling_utils").setLevel(logging.WARN)  # Reduce logging
+        # if args.eval_all_checkpoints:
+        #     checkpoints = list(os.path.dirname(c) for c in sorted(glob.glob(output_dir + '/**/' + WEIGHTS_NAME, recursive=True)))
+        #     checkpoints = checkpoints[:-1]
+        #     logging.getLogger("transformers.modeling_utils").setLevel(logging.WARN)  # Reduce logging
         logger.info("Evaluate the following checkpoints: %s", checkpoints)
         for checkpoint in checkpoints:
             global_step = checkpoint.split('-')[-1] if len(checkpoints) > 1 else ""

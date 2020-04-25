@@ -47,8 +47,8 @@ from transformers import AdamW, WarmupLinearSchedule
 
 
 ########################################### change when move to hpc #########################
-from modeling_bert_custom_loss3  import BertForMultipleChoice
-from utils_multiple_choice_custom  import (convert_examples_to_features, processors)
+from modeling_bert_custom_st  import BertForMultipleChoice
+from utils_multiple_choice_custom_st  import (convert_examples_to_features, processors)
 
 logger = logging.getLogger(__name__)
 

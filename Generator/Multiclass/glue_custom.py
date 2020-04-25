@@ -260,6 +260,11 @@ class ColaProcessor(DataProcessor):
         """See base class."""
         return self._create_examples(
             self._read_tsv(os.path.join(data_dir, "dev.tsv")), "dev")
+    
+    def get_test_examples(self, data_dir):
+        """See base class."""
+        return self._create_examples(
+            self._read_tsv(os.path.join(data_dir, "test.tsv")), "test")
 
     def get_labels(self):
         """See base class."""
@@ -494,6 +499,11 @@ class WnliProcessor(DataProcessor):
         """See base class."""
         return self._create_examples(
             self._read_tsv(os.path.join(data_dir, "dev.tsv")), "dev")
+            
+    def get_test_examples(self, data_dir):
+        """See base class."""
+        return self._create_examples(
+            self._read_tsv(os.path.join(data_dir, "test.tsv")), "test")
 
     def get_labels(self):
         """See base class."""
@@ -567,7 +577,7 @@ glue_tasks_num_labels = {
     "rte": 2,
     "wnli": 2,
     "ask": 1036,
-    "twa": 2200,
+    "twa": 9664,
     "n2c2": 434056
 }
 
