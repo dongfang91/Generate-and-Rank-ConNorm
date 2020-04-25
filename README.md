@@ -15,4 +15,3 @@
 
 ### Candidate ranker
 * BERT-based listwise classifier: Ranker/
-
