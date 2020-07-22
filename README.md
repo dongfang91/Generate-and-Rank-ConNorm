@@ -1,5 +1,5 @@
 # Generate-and-Rank-ConNorm
- Generate-and-Rank Framework with Semantic Type Regularization for Biomedical Concept Normalization
+ [Generate-and-Rank Framework with Semantic Type Regularization for Biomedical Concept Normalization](https://www.aclweb.org/anthology/2020.acl-main.748/)
 
 ## Setup
 * We recommend Python 3.6 or higher. The code does **not** work with Python 2.7.
