@@ -14,28 +14,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import csv
-import sys
-import logging
-
-logger = logging.getLogger(__name__)
-
 try:
     from scipy.stats import pearsonr, spearmanr
     from sklearn.metrics import matthews_corrcoef, f1_score
+
     _has_sklearn = True
-except (AttributeError, ImportError) as e:
-    logger.warning("To use data.metrics please install scikit-learn. See https://scikit-learn.org/stable/index.html")
+except (AttributeError, ImportError):
     _has_sklearn = False
+
 
 def is_sklearn_available():
     return _has_sklearn
+
 
 if _has_sklearn:
 
     def simple_accuracy(preds, labels):
         return (preds == labels).mean()
-
 
     def acc_and_f1(preds, labels):
         acc = simple_accuracy(preds, labels)
@@ -46,7 +41,6 @@ if _has_sklearn:
             "acc_and_f1": (acc + f1) / 2,
         }
 
-
     def pearson_and_spearman(preds, labels):
         pearson_corr = pearsonr(preds, labels)[0]
         spearman_corr = spearmanr(preds, labels)[0]
@@ -55,7 +49,6 @@ if _has_sklearn:
             "spearmanr": spearman_corr,
             "corr": (pearson_corr + spearman_corr) / 2,
         }
-
 
     def glue_compute_metrics(task_name, preds, labels):
         assert len(preds) == len(labels)
@@ -70,20 +63,25 @@ if _has_sklearn:
         elif task_name == "qqp":
             return acc_and_f1(preds, labels)
         elif task_name == "mnli":
-            return {"acc": simple_accuracy(preds, labels)}
+            return {"mnli/acc": simple_accuracy(preds, labels)}
         elif task_name == "mnli-mm":
-            return {"acc": simple_accuracy(preds, labels)}
+            return {"mnli-mm/acc": simple_accuracy(preds, labels)}
         elif task_name == "qnli":
             return {"acc": simple_accuracy(preds, labels)}
         elif task_name == "rte":
             return {"acc": simple_accuracy(preds, labels)}
         elif task_name == "wnli":
             return {"acc": simple_accuracy(preds, labels)}
-        elif task_name == "ask":
+        elif task_name == "hans":
             return {"acc": simple_accuracy(preds, labels)}
-        elif task_name == "twa":
-            return {"acc": simple_accuracy(preds, labels)}
-        elif task_name == "n2c2":
+        elif task_name == "conceptnorm":
             return {"acc": simple_accuracy(preds, labels)}
         else:
-            raise  {"acc": simple_accuracy(preds, labels)}
+            raise KeyError(task_name)
+
+    def xnli_compute_metrics(task_name, preds, labels):
+        assert len(preds) == len(labels)
+        if task_name == "xnli":
+            return {"acc": simple_accuracy(preds, labels)}
+        else:
+            raise KeyError(task_name)
