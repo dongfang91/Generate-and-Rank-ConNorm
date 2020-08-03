@@ -6,9 +6,9 @@
  "glue_tasks_num_labels" (line 608), "glue_processors" (line 622), "glue_output_modes" (line 636)
 
 ### Data format
- * Please see data/train.tsv for the input format: each row is a pair of mention and concept.
- * data/label.txt is a json file that contains all the concepts from the ontology. 
- * To train the model, please put "train.tsv", "dev.tsv", "test.tsv", and "label.txt" into your "./path/to/data" folder  
+ * Please see data/askapatient/0/train.tsv for the input format: each row is a pair of mention and concept.
+ * data/askapatient/label.txt is a json file that contains all the concepts from the ontology. 
+ * To train and evaluate the model, please have the following files ready: "train.tsv", "dev.tsv", "test.tsv", and "label.txt".
  
 ### Different pre-trained models
  * [Pre-trained LM](https://huggingface.co/models?filter=pytorch)
