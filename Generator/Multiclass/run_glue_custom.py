@@ -32,7 +32,7 @@ from transformers import (
     TrainingArguments,
     set_seed,
 )
-from .glue_task_custom import glue_output_modes,glue_tasks_num_labels,glue_processors
+from glue_task_custom import glue_output_modes,glue_tasks_num_labels,glue_processors
 from glue_metrics_custom import glue_compute_metrics
 from glue_dataset_custom import GlueDataset
 from glue_dataset_custom import GlueDataTrainingArguments as DataTrainingArguments
