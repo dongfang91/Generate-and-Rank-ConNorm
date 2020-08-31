@@ -209,6 +209,38 @@ def main():
             eval_results.update(eval_result)
 
     if training_args.do_predict:
+        trainer.compute_metrics = build_compute_metrics_fn(eval_dataset.args.task_name)
+
+        logging.info("*** Evaluate ***")
+        predictions = trainer.predict(test_dataset=eval_dataset)
+        metrics, results = predictions.metrics, predictions.predictions
+
+        output_eval_file = os.path.join(
+            training_args.output_dir, f"eval_results_checkpoint.txt"
+        )
+        if trainer.is_world_master():
+            with open(output_eval_file, "w") as writer:
+                logger.info("***** Eval results {} *****".format(eval_dataset.args.task_name))
+                for key, value in metrics.items():
+                    logger.info("  %s = %s", key, value)
+                    writer.write("%s = %s\n" % (key, value))
+
+        output_eval_file = os.path.join(training_args.output_dir, "eval_predictions_checkpoint.txt")
+        if trainer.is_world_master():
+            with open(output_eval_file, "w") as writer:
+                logger.info("***** Eval results {} *****".format(test_dataset.args.task_name))
+                writer.write("index\tprediction\n")
+                for index, item in enumerate(results):
+                    if output_mode == "regression":
+                        writer.write("%d\t%3.3f\n" % (index, item))
+                    else:
+                        item = test_dataset.get_labels(data_args.label_dir)[item]
+                        writer.write("%d\t%s\n" % (index, item))
+
+
+
+
+
         logging.info("*** Test ***")
         test_datasets = [test_dataset]
         if data_args.task_name == "mnli":
@@ -218,18 +250,30 @@ def main():
             )
 
         for test_dataset in test_datasets:
-            predictions = trainer.predict(test_dataset=test_dataset).predictions
+            predictions = trainer.predict(test_dataset=test_dataset)
+            metrics, results = predictions.metrics, predictions.predictions
+
+            output_eval_file = os.path.join(
+                training_args.output_dir, f"test_results_checkpoint.txt"
+            )
+            if trainer.is_world_master():
+                with open(output_eval_file, "w") as writer:
+                    logger.info("***** Eval results {} *****".format(eval_dataset.args.task_name))
+                    for key, value in metrics.items():
+                        logger.info("  %s = %s", key, value)
+                        writer.write("%s = %s\n" % (key, value))
+
             if output_mode == "classification":
-                predictions = np.argmax(predictions, axis=1)
+                results = np.argmax(results, axis=1)
 
             output_test_file = os.path.join(
-                training_args.output_dir, f"test_results_{test_dataset.args.task_name}.txt"
+                training_args.output_dir, f"test_predictions_checkpoint.txt"
             )
             if trainer.is_world_master():
                 with open(output_test_file, "w") as writer:
                     logger.info("***** Test results {} *****".format(test_dataset.args.task_name))
                     writer.write("index\tprediction\n")
-                    for index, item in enumerate(predictions):
+                    for index, item in enumerate(results):
                         if output_mode == "regression":
                             writer.write("%d\t%3.3f\n" % (index, item))
                         else:
