@@ -9,7 +9,7 @@
 
 ## Getting Started
 
-### Candidate Generaotr
+### Candidate Generator
 * [BERT-based multi-class classifier](https://github.com/dongfang91/Generate-and-Rank-ConNorm/tree/master/Generator/Multiclass): Generator/Multiclass/
 * [Lucene-based dictionary look-up system](https://github.com/dongfang91/Generate-and-Rank-ConNorm/tree/master/Generator/Lucene): Generator/Lucene/
 
