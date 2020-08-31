@@ -32,7 +32,7 @@ from transformers import (
     TrainingArguments,
     set_seed,
 )
-from glue_task_custom import glue_output_modes,glue_tasks_num_labels
+from .glue_task_custom import glue_output_modes,glue_tasks_num_labels,glue_processors
 from glue_metrics_custom import glue_compute_metrics
 from glue_dataset_custom import GlueDataset
 from glue_dataset_custom import GlueDataTrainingArguments as DataTrainingArguments
@@ -106,7 +106,8 @@ def main():
     set_seed(training_args.seed)
 
     try:
-        num_labels = glue_tasks_num_labels[data_args.task_name]
+        num_labels = len(glue_processors[data_args.task_name]().get_labels(data_args.label_dir))
+        # num_labels = glue_tasks_num_labels[data_args.task_name]
         output_mode = glue_output_modes[data_args.task_name]
     except KeyError:
         raise ValueError("Task not found: %s" % (data_args.task_name))
